@@ -1,0 +1,187 @@
+:root {
+  --main-bg-color: white;
+  --text-color: #222;
+  --primary-color: #013c28;
+  --tertiary-color: #3f3f3f;
+}
+
+::selection {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+::-moz-selection {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+@font-face {
+  font-family: 'Fantasque Sans Mono';
+  src: url('/fonts/FantasqueSansMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fantasque Sans Mono';
+  src: url('/fonts/FantasqueSansMono-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fantasque Sans Mono';
+  src: url('/fonts/FantasqueSansMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fantasque Sans Mono';
+  src: url('/fonts/FantasqueSansMono-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Roboto Serif';
+  src: url('/fonts/RobotoSerif-Regular.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-optical-sizing: auto;
+  font-variation-settings: 'GRAD' 0, 'wdth' 100;
+}
+
+@font-face {
+  font-family: 'Roboto Serif';
+  src: url('/fonts/RobotoSerif-Italic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-optical-sizing: auto;
+  font-variation-settings: 'GRAD' 0, 'wdth' 100;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Regular.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-optical-sizing: auto;
+  font-variation-settings: 'wdth' 100;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Italic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-optical-sizing: auto;
+  font-variation-settings: 'wdth' 100;
+}
+
+pre, code {
+  font-family: "Fantasque Sans Mono", monospace;
+}
+
+pre {
+  padding: 1rem;
+  border-radius: 1rem;
+  overflow: auto;
+}
+
+body {
+  color: #222;
+  font-family: "Roboto Serif", serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.title {
+  font-family: "Roboto", sans-serif;
+  font-style: italic;
+  font-weight: normal;
+}
+
+.page-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.page-title h1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 450;
+  color:#013c28;
+}
+
+.page-title time {
+  font-style: italic;
+  color: var(--tertiary-color);
+}
+
+header {
+  display: flex;
+  align-items: baseline;
+  color: var(--tertiary-color);
+}
+
+nav {
+  font-size: 18px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  margin-left: 1rem;
+  column-gap: 2rem;
+}
+
+nav a {
+  color: var(--tertiary-color);
+}
+
+nav a.active {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: var(--text-color);
+}
+
+main {
+  text-align: left;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.highlight {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+@media only screen and (min-width: 1000px) {
+  body {
+    margin: 1rem auto;
+    width: 48rem;
+  }
+
+  header {
+    margin-bottom: 3rem;
+  }
+
+  footer {
+    margin-top: 5rem;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  body {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin: auto;
+  }
+}
