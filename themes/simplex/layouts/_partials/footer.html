@@ -1,0 +1,19 @@
+<div class="footer-links">
+
+{{- $page := .page }}
+{{- $menuID := .menuID }}
+
+{{- with index site.Menus $menuID }}
+  <div class="sitemap">
+    <ul>
+      {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+    </ul>
+  </div>
+{{- end }}
+  <div class="socials">
+    <ul>
+      <li><a href="https://github.com/Sighery" target="_blank">GitHub</a></li>
+      <li><a href="https://twitch.com/Sighery" target="_blank">Twitch</a></li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+{{ define "main" }}
+  {{ .Content }}
+  <div class="article-list">
+  {{ range site.RegularPages }}
+    {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+    {{ $dateHuman := .Date | time.Format ":date_medium" }}
+
+    <div class="article-item">
+      <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+      <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+      <!-- {{ .Summary }} -->
+    </div>
+  {{ end }}
+  </div>
+{{ end }}
