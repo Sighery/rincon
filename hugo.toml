@@ -1,0 +1,23 @@
+baseURL = 'https://sighery.com/'
+languageCode = 'en-001'
+title = 'Rincon'
+theme = 'simplex'
+
+[menus]
+  [[menus.main]]
+    name = 'Home'
+    pageRef = '/'
+    weight = 10
+
+  # [[menus.main]]
+  #   name = 'Posts'
+  #   pageRef = '/posts'
+  #   weight = 20
+
+  # [[menus.main]]
+  #   name = 'Series'
+  #   pageRef = '/series'
+  #   weight = 30
+
+[taxonomies]
+  serie = 'series'
