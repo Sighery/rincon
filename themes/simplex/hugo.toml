@@ -1,25 +1,4 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-001'
 title = 'Simplex'
-
-[menus]
-  [[menus.main]]
-    name = 'Home'
-    pageRef = '/'
-    weight = 10
-
-  # [[menus.main]]
-  #   name = 'Posts'
-  #   pageRef = '/posts'
-  #   weight = 20
-
-  # [[menus.main]]
-  #   name = 'Series'
-  #   pageRef = '/series'
-  #   weight = 30
-
-[taxonomies]
-  serie = 'series'
 
 [module]
   [module.hugoVersion]

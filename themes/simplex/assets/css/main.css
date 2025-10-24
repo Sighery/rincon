@@ -79,7 +79,8 @@
   font-variation-settings: 'wdth' 100;
 }
 
-pre, code {
+pre,
+code {
   font-family: "Fantasque Sans Mono", monospace;
 }
 
@@ -102,16 +103,10 @@ body {
   font-weight: normal;
 }
 
-.page-title {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-}
-
 .page-title h1 {
   font-family: "Roboto", sans-serif;
   font-weight: 450;
-  color:#013c28;
+  color: #013c28;
 }
 
 .page-title time {
@@ -136,7 +131,8 @@ nav ul {
   column-gap: 2rem;
 }
 
-nav a {
+nav a,
+footer a {
   color: var(--tertiary-color);
 }
 
@@ -145,7 +141,8 @@ nav a.active {
   font-weight: bold;
 }
 
-nav a:hover {
+nav a:hover,
+footer a:hover {
   color: var(--text-color);
 }
 
@@ -163,6 +160,36 @@ a {
   padding-bottom: 5px;
 }
 
+footer {
+  color: var(--tertiary-color);
+  font-size: 14px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.sitemap ul,
+.socials ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sitemap li,
+.socials li {
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.article-item time {
+  color: var(--tertiary-color);
+  font-style: italic;
+}
+
 @media only screen and (min-width: 1000px) {
   body {
     margin: 1rem auto;
@@ -173,8 +200,49 @@ a {
     margin-bottom: 3rem;
   }
 
+  .page-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .article-list {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    column-gap: 43px;
+    max-width: 100%;
+  }
+
+  .article-item {
+    display: contents;
+  }
+
+  .article-item time {
+    grid-column: 1;
+    align-self: start;
+    text-align: right;
+  }
+
+  .article-item time::after {
+    content: " »";
+    font-size: 0.9em;
+  }
+
+  .article-item h2 {
+    grid-column: 2;
+    text-align: left;
+    font-size: 16px;
+    margin: 0px;
+  }
+
   footer {
     margin-top: 5rem;
+  }
+
+  @media only screen and (min-width: 1500px) {
+    body {
+      width: 53rem;
+    }
   }
 }
 
@@ -183,5 +251,26 @@ a {
     padding-left: 2rem;
     padding-right: 2rem;
     margin: auto;
+  }
+
+  .page-title {
+    padding-bottom: 0.8rem;
+  }
+
+  .page-title h1 {
+    margin-bottom: 0.03rem;
+  }
+
+  .article-item {
+    padding-bottom: 2em;
+  }
+
+  .article-item h2 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  footer {
+    margin-top: 3rem;
   }
 }
