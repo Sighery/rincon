@@ -150,6 +150,11 @@ main {
   text-align: left;
 }
 
+.article-item time {
+  color: var(--tertiary-color);
+  font-style: italic;
+}
+
 a {
   color: var(--primary-color);
   text-decoration: none;
@@ -185,11 +190,6 @@ footer {
   text-align: left;
 }
 
-.article-item time {
-  color: var(--tertiary-color);
-  font-style: italic;
-}
-
 @media only screen and (min-width: 1000px) {
   body {
     margin: 1rem auto;
@@ -200,6 +200,14 @@ footer {
     margin-bottom: 3rem;
   }
 
+  header h1 {
+    font-size: 2.2em;
+  }
+
+  nav {
+    font-size: 1.2em;
+  }
+
   .page-title {
     display: flex;
     align-items: baseline;
@@ -208,19 +216,22 @@ footer {
 
   .article-list {
     display: grid;
-    grid-template-columns: 130px 1fr;
-    column-gap: 43px;
+    grid-template-columns: 128px 1fr;
+    column-gap: 56px;
     max-width: 100%;
+    row-gap: 1em;
   }
 
   .article-item {
     display: contents;
+    font-size: 1em;
   }
 
   .article-item time {
     grid-column: 1;
     align-self: start;
     text-align: right;
+    font-size: 1.1em;
   }
 
   .article-item time::after {
@@ -231,7 +242,7 @@ footer {
   .article-item h2 {
     grid-column: 2;
     text-align: left;
-    font-size: 16px;
+    font-size: 1.1em;
     margin: 0px;
   }
 
