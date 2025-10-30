@@ -3,6 +3,7 @@
   --text-color: #222;
   --primary-color: #013c28;
   --tertiary-color: #3f3f3f;
+  --shadow-color: #868686;
 }
 
 ::selection {
@@ -95,6 +96,33 @@ body {
   font-family: "Roboto Serif", serif;
   font-weight: 400;
   line-height: 1.5;
+}
+
+main img {
+  max-width: 100%;
+  border-radius: 1rem;
+  box-shadow: 3px 3px 2px var(--shadow-color);
+}
+
+figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+figure img {
+  justify-content: center;
+}
+
+figure figcaption {
+  margin-top: -4px;
+  font-style: italic;
+  font-size: 0.9em;
 }
 
 .title {
