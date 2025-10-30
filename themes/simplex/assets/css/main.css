@@ -165,6 +165,21 @@ a {
   padding-bottom: 5px;
 }
 
+blockquote {
+  margin: auto 0;
+  color: var(--tertiary-color);
+}
+
+blockquote > p::before {
+  content: "“";
+  font-size: 1.2em;
+}
+
+blockquote > p::after {
+  content: "”";
+  font-size: 1.2em;
+}
+
 footer {
   color: var(--tertiary-color);
   font-size: 14px;
