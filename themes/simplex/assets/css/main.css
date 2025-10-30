@@ -137,18 +137,6 @@ figure figcaption {
   font-size: 0.9em;
 }
 
-.title {
-  font-family: "Roboto", sans-serif;
-  font-weight: normal;
-  font-variant-caps: small-caps;
-  padding-top: 1em;
-}
-
-.page-title h1 {
-  font-family: "Roboto", sans-serif;
-  font-weight: 450;
-}
-
 h1,
 h2,
 h3,
@@ -156,6 +144,24 @@ h4,
 h5,
 h6 {
   color: var(--primary-color);
+}
+
+.title {
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  font-variant-caps: small-caps;
+  padding-top: 1em;
+}
+
+.reading-time {
+  color: var(--tertiary-color);
+  font-style: italic;
+}
+
+.page-title h1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 450;
+  margin-top: 0;
 }
 
 .page-title time {
