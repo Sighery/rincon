@@ -207,6 +207,7 @@ main {
 a {
   color: var(--primary-color);
   text-decoration: none;
+  font-weight: 500;
 }
 
 .highlight {
