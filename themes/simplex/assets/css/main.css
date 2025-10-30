@@ -139,14 +139,23 @@ figure figcaption {
 
 .title {
   font-family: "Roboto", sans-serif;
-  font-style: italic;
   font-weight: normal;
+  font-variant-caps: small-caps;
+  padding-top: 1em;
 }
 
 .page-title h1 {
   font-family: "Roboto", sans-serif;
   font-weight: 450;
-  color: #013c28;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--primary-color);
 }
 
 .page-title time {
