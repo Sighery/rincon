@@ -80,6 +80,18 @@
   font-variation-settings: 'wdth' 100;
 }
 
+.aside {
+  color: var(--tertiary-color);
+  font-style: italic;
+}
+
+.aside::before {
+  content: "† ";
+  color: var(--tertiary-color);
+  font-style: italic;
+  font-size: 1.2em;
+}
+
 pre,
 code {
   font-family: "Fantasque Sans Mono", monospace;
