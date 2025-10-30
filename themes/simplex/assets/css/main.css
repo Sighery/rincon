@@ -168,6 +168,7 @@ a {
 footer {
   color: var(--tertiary-color);
   font-size: 14px;
+  padding-bottom: 1rem;
 }
 
 .footer-links {
