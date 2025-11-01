@@ -338,6 +338,10 @@ footer {
     margin: auto;
   }
 
+  header {
+    margin-bottom: 1rem;
+  }
+
   .page-title {
     padding-bottom: 0.8rem;
   }
