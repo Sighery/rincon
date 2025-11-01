@@ -123,6 +123,10 @@ pre code {
   min-width: 100%;
 }
 
+.code-wrap pre {
+  white-space: pre-wrap;
+}
+
 body {
   color: #222;
   font-family: "Roboto Serif", serif;
