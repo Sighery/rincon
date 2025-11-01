@@ -4,6 +4,9 @@
   --primary-color: #013c28;
   --tertiary-color: #3f3f3f;
   --shadow-color: #868686;
+
+  --pre-color: #f8f8f2;
+  --pre-background: #272822;
 }
 
 ::selection {
@@ -92,6 +95,14 @@
   font-size: 1.2em;
 }
 
+.highlight {
+  padding: 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
 pre,
 code {
   font-family: "Fantasque Sans Mono", monospace;
@@ -99,8 +110,17 @@ code {
 
 pre {
   padding: 1rem;
-  border-radius: 1rem;
+  margin: 0;
   overflow: auto;
+  color: var(--pre-color);
+  background-color: var(--pre-background);
+  tab-size: 4;
+  scrollbar-color: var(--pre-color) var(--pre-background);
+}
+
+pre code {
+  display: inline-block;
+  min-width: 100%;
 }
 
 body {
@@ -214,11 +234,6 @@ a {
   color: var(--primary-color);
   text-decoration: none;
   font-weight: 500;
-}
-
-.highlight {
-  padding-top: 5px;
-  padding-bottom: 5px;
 }
 
 blockquote {
