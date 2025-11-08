@@ -3,6 +3,16 @@ languageCode = 'en-001'
 title = 'Rincon'
 theme = 'simplex'
 
+[module]
+  [[module.mounts]]
+    disableWatch = false
+    lang = ''
+    source = 'content'
+    target = 'content'
+    excludeFiles = [
+      "**/*.excalidraw"
+    ]
+
 [menus]
   [[menus.main]]
     name = 'Home'
