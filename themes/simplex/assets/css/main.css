@@ -134,7 +134,7 @@ body {
   line-height: 1.5;
 }
 
-main img {
+main img, main video {
   max-width: 100%;
   border-radius: 1rem;
   box-shadow: 3px 3px 2px var(--shadow-color);
@@ -151,7 +151,7 @@ figure {
   padding-bottom: 0.5rem;
 }
 
-figure img {
+figure img, figure video {
   justify-content: center;
 }
 
