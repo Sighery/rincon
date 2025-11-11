@@ -135,7 +135,8 @@ body {
   line-height: 1.5;
 }
 
-main img, main video {
+main img,
+main video {
   max-width: 100%;
   border-radius: 1rem;
   box-shadow: 3px 3px 2px var(--shadow-color);
@@ -152,7 +153,8 @@ figure {
   padding-bottom: 0.5rem;
 }
 
-figure img, figure video {
+figure img,
+figure video {
   justify-content: center;
 }
 
@@ -169,6 +171,13 @@ h4,
 h5,
 h6 {
   color: var(--primary-color);
+}
+
+h3.title,
+h4.title,
+h5.title,
+h6.title {
+  margin-bottom: -0.4em;
 }
 
 .title {
@@ -246,12 +255,12 @@ blockquote {
   color: var(--tertiary-color);
 }
 
-blockquote > p::before {
+blockquote>p::before {
   content: "“";
   font-size: 1.2em;
 }
 
-blockquote > p::after {
+blockquote>p::after {
   content: "”";
   font-size: 1.2em;
 }
