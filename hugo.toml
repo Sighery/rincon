@@ -41,3 +41,10 @@ theme = 'simplex'
       [markup.goldmark.parser.attribute]
         block = true
         title = true
+
+  [markup.highlight]
+    style = 'monokai'
+    hl_inline = false
+    noClasses = false
+    tabWidth = 4
+    wrapperClass = 'highlight'
