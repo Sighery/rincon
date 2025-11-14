@@ -195,7 +195,6 @@ h6.title {
 .page-title h1 {
   font-family: "Roboto", sans-serif;
   font-weight: 450;
-  margin-top: 0;
 }
 
 .page-title time {
@@ -312,9 +311,27 @@ footer {
   }
 
   .page-title {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "reading date"
+      "title title";
     align-items: baseline;
-    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .reading-time {
+    grid-area: reading;
+  }
+
+  .page-title h1 {
+    grid-area: title;
+    margin-top: 0.3rem;
+    text-align: center;
+  }
+
+  .page-title time {
+    grid-area: date;
   }
 
   .article-list {
@@ -372,11 +389,28 @@ footer {
   }
 
   .page-title {
-    padding-bottom: 0.8rem;
+    display: grid;
+    gap: 0.15rem;
+    grid-template-areas:
+      "reading"
+      "title"
+      "date"
+    ;
+    padding-bottom: 0.3rem;
+  }
+
+  .reading-time {
+    grid-area: reading;
   }
 
   .page-title h1 {
-    margin-bottom: 0.03rem;
+    grid-area: title;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .page-title time {
+    grid-area: date;
   }
 
   .article-item {
