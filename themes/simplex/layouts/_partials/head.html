@@ -35,6 +35,18 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="{{ $twresized.Permalink }}" />
   {{ end }}
+{{ else }}
+  {{ $site_title := "Sighery's Rincon" }}
+  <meta property="og:title" content="{{ $site_title }}" />
+  <meta name="twitter:title" content="{{ $site_title }}" />
+
+  {{ $site_description := "Silly little place where I write about things" }}
+  <meta property="og:description" content="{{ $site_description }}" />
+  <meta property="description" content="{{ $site_description }}" />
+  <meta property="twitter:description" content="{{ $site_description }}" />
+
+  <meta property="og:url" content="{{ .Permalink }}" />
+  <link rel="canonical" href="{{ .Permalink }}" />
 {{ end }}
 
 {{ partialCached "head/css.html" . }}
