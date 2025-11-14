@@ -21,15 +21,11 @@ disableKinds = ['taxonomy', 'term', 'sitemap']
     pageRef = '/'
     weight = 10
 
-  # [[menus.main]]
-  #   name = 'Posts'
-  #   pageRef = '/posts'
-  #   weight = 20
-
-  # [[menus.main]]
-  #   name = 'Series'
-  #   pageRef = '/series'
-  #   weight = 30
+  [[menus.main]]
+    name = 'RSS'
+    # pageRef won't link it
+    url = '/index.xml'
+    weight = 20
 
 [taxonomies]
   serie = 'series'
