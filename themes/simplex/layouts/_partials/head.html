@@ -25,7 +25,7 @@
   <meta property="og:url" content="{{ .Permalink }}" />
   <link rel="canonical" href="{{ .Permalink }}" />
 
-  {{ with .Resources.GetMatch .Params.embedimage }}
+  {{ with .Resources.Get .Params.embedimage }}
     {{ $ogresized := .Fit "1200x630" }}
     <meta property="og:image" content="{{ $ogresized.Permalink }}" />
     <meta property="og:image:width" content="1200" />

@@ -5,9 +5,11 @@
 
   {{- $u := urls.Parse (.Get "src") -}}
   {{- $src := $u.String -}}
+  {{- $resource := "" -}}
   {{- if not $u.IsAbs -}}
     {{- with or (.Page.Resources.Get $u.Path) (resources.Get $u.Path) -}}
       {{- $src = .RelPermalink -}}
+      {{- $resource = . -}}
     {{- end -}}
   {{- end -}}
 
@@ -15,9 +17,9 @@
     {{- if or (.Get "alt") (.Get "caption") }}
     alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
     {{- end -}}
-    {{- with .Get "width" }} width="{{ . }}"{{ end -}}
-    {{- with .Get "height" }} height="{{ . }}"{{ end -}}
     {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}
+    {{- with .Get "width" }} width="{{ . }}"{{ else with $resource }} width="{{ .Width }}"{{ end -}}
+    {{- with .Get "height" }} height="{{ . }}"{{ else with $resource }} height="{{ .Height}}"{{ end -}}
   ><!-- Closing img tag -->
   {{- if .Get "link" }}</a>{{ end -}}
   {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr") -}}
