@@ -3,6 +3,8 @@ languageCode = 'en-001'
 title = 'Rincon'
 theme = 'simplex'
 
+disableKinds = ['taxonomy', 'term']
+
 [module]
   [[module.mounts]]
     disableWatch = false
