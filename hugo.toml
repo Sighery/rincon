@@ -3,7 +3,7 @@ languageCode = 'en-001'
 title = 'Rincon'
 theme = 'simplex'
 
-disableKinds = ['taxonomy', 'term']
+disableKinds = ['taxonomy', 'term', 'sitemap']
 
 [module]
   [[module.mounts]]
