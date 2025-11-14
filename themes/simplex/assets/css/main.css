@@ -267,29 +267,43 @@ blockquote>p::after {
 footer {
   color: var(--tertiary-color);
   font-size: 14px;
-  padding-bottom: 1rem;
 }
 
 .footer-links {
-  display: flex;
+  display: grid;
+  grid-template-areas:
+    "sitemap socials work";
+  align-items: baseline;
+  gap: 4rem;
   justify-content: center;
-  align-items: center;
-  gap: 2rem;
 }
 
-.sitemap ul,
-.socials ul {
+footer .sitemap {
+  grid-area: sitemap;
+  text-align: left;
+}
+
+footer .socials {
+  grid-area: socials;
+  text-align: center;
+}
+
+footer .work {
+  grid-area: work;
+  text-align: right;
+}
+
+footer ul {
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 0.7rem;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.sitemap li,
-.socials li {
+footer li {
   margin: 0;
-  text-align: center;
 }
 
 @media only screen and (min-width: 1000px) {
@@ -368,6 +382,7 @@ footer {
 
   footer {
     margin-top: 5rem;
+    padding-bottom: 3rem;
   }
 
   @media only screen and (min-width: 1500px) {
@@ -424,5 +439,6 @@ footer {
 
   footer {
     margin-top: 3rem;
+    padding-bottom: 2rem;
   }
 }
