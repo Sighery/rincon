@@ -342,7 +342,7 @@ footer li {
   .page-title h1 {
     grid-area: title;
     margin-top: 0.3rem;
-    text-align: center;
+    text-align: left;
   }
 
   .page-title time {
