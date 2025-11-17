@@ -1,6 +1,6 @@
 +++
-date = "2025-10-24T00:00:00+00:00"
-draft = true
+date = "2025-11-17T00:00:00+00:00"
+draft = false
 title = "Reverse engineering Bluetooth on Amazon Kindle eReaders"
 summary = "A journey of learning C and reverse engineering to be more efficiently lazy"
 series = ["Hacking Bluetooth on Kindle eReaders"]
@@ -202,7 +202,7 @@ query for the data.
 
 ### Service specifications
 
-This is part of the GATT—_Generic ATtribute Profile_—specification. From
+This is part of the GATT—_Generic ATTribute Profile_—specification. From
 [The Bluetooth Low Energy Primer][]:
 
 > State data on servers resides in formally defined data items known as
@@ -454,8 +454,8 @@ The next service, `0x1801`, corresponds to the _Generic Attribute Service_. It
 contains a single readable Characteristic, `0x2B2A`, which corresponds to the
 _Database Hash Characteristic_. This is used by Servers that might change
 their Services or Characteristics at runtime. Clients can use this Service to
-detect changes more quickly and easily. My Pico Server does not use this
-functionality, but BTstack populates it automatically nonetheless.
+detect changes more quickly and easily. My Pico Server does not make use of
+this functionality, but BTstack populates it automatically nonetheless.
 
 Then we have the _Battery Service_, with UUID `0x180F`, and its _Battery Level
 Characteristic_, with UUID `0x2A19`. Here we see our first Characteristic
@@ -663,8 +663,8 @@ $ file /usr/bin/ace_bt_cli /usr/lib/libace_bt_cli.so /usr/lib/libace_bt.so
 Did you notice the different interpreters? It turns out that, from version
 5.16.3, Lab126 switched all Kindles that were still receiving updates at that
 time to ARMHF—ARM Hard Float. All previous firmware versions, even on
-relatively new devices like my Kindle Paperwhite 11th-generation—PW5, run ARM
-Soft Float—also known as ARMEL, or SF in the Kindle community.
+relatively new devices like my 2022 Kindle Paperwhite 11th-generation (PW5),
+run ARM Soft Float, also known as ARMEL or SF in the Kindle modding community.
 
 This effectively means that we have two targets. Binaries can sometimes be
 made to work by simply patching the interpreter—keyword being _sometimes_. For
@@ -736,7 +736,8 @@ symbols. I have no idea what this stack is, but online searches indicate that
 it is either a Broadcom, or a Cypress proprietary stack. There is no
 `ace_bt_cli` binary, but a `/usr/bin/btui` binary—not available in my newer
 devices—shows a similar, albeit more limited, help interface. Perhaps this was
-a precursor to the later `ace_bt_cli` utility in 11th-generation and later.
+a precursor to the later `ace_bt_cli` utility in the 11th-generation and
+later.
 
 That being said, the rest of the article will focus on the newer devices, as I
 lack any devices from the 8th to 10th-generation. Investigating those is
@@ -758,18 +759,18 @@ we can discuss some of the differences later.
 	loading="lazy"
 >}}
 
-I need to quickly mention that `major.minor.0` firmwares are limited to
-release Kindles. Even if you know this firmware version exists for your
-device, you won't be able to download it from the [Kindle firmware files][]
-page, no matter if you manually change the URL to the `.0` version. I am
-unsure why this is the case, but it means that often I often investigate
-changes on the `.1` releases and then assume that the change was initially
-implemented on the `.0` release.
+I would quickly mention that `major.minor.0` firmwares are limited to release
+Kindles. Even if you know this firmware version exists for your device, you
+won't be able to download it from the [Kindle firmware files][] page, no
+matter if you manually change the URL to the `.0` version. I am unsure why
+this is the case, but it means that I will investigate changes on the `.1`
+releases and then assume that the change was initially implemented on the `.0`
+release.
 { class = "aside" }
 
 The Kindles use an old version of Upstart (0.6.6) as the init system, with
 lots of custom jobs. The relevant one for us, `/etc/upstart/btmanagerd.conf`,
-starts soon after system startup. The main interesting jobs that run before
+begins soon after system startup. The main interesting jobs that run before
 `btmanagerd` are the `filesystems*` ones, setting up `/var/local` and the
 `/mnt/us` userstore, on which `btmanagerd` indirectly depends. That being
 said, I will leave an analysis of services running on a Kindle out of this
@@ -799,7 +800,7 @@ unix  3      [ ]         STREAM     CONNECTED      19471 2920/btmanagerd
 
 I have not investigated what the TCP socket is for yet, and it seems to be
 unused by the Bluetooth clients built with `ace_bt`. Nonetheless, the interest
-lies in the `/dev/aipc/X/ss` socket. This is created by the `ace_aipc`
+lies in the `/dev/aipc/0/ss` socket. This is created by the `ace_aipc`
 library, which `btmanagerd` indirectly uses. Any client code that uses
 `ace_bt` will also indirectly use `ace_aipc` and connect to the same socket.
 The number appears to be deterministic, and Bluetooth will always use
@@ -979,9 +980,9 @@ for the BLE connection event, nor many other GATT Client events.
 { class = "aside" }
 
 {{< figure
-	src="./ace_bt-gattc-callback-handler.webp"
+	src="./kindlebt-gattc-callback-handler.webp"
 	alt="The callback handler for GATT Client operations reimplemented in KindleBT"
-	caption="The GATT Client callback handler from ace_bt reversed and reimplemented"
+	caption="The GATT Client callback handler reversed and reimplemented in KindleBT"
 	loading="lazy"
 	attr="<br>From the KindleBT codebase"
 	attrlink="https://github.com/Sighery/kindlebt/blob/7a1a53f4ad02e0a4c11f330c2da6625d4388e765/src/compat_ace_handler.c#L9-L194"
@@ -990,12 +991,14 @@ for the BLE connection event, nor many other GATT Client events.
 In the previous figure you can see the GATT Client callback handler. This was
 reversed from the `ace_bt` library in firmware version 5.17, and backported
 into KindleBT so that it could work on devices with firmware version 5.16, in
-which `ace_bt` doesn't yet implement this functionality. Returning to the
-previous point, `btmanagerd` receives the raw Bluetooth packet events,
-translates them into internal data structures, and then sends the structures
-over the IPC socket. KindleBT then receives these structures, determines the
-event type—in this case, the _GATT Client Read Characteristic_ event—and, if
-the application has registered for that event, executes the callback.
+which `ace_bt` doesn't yet implement this functionality.
+
+Returning to the previous point, `btmanagerd` receives the raw Bluetooth
+packet events, translates them into internal data structures, and then sends
+the structures over the IPC socket. KindleBT then receives these structures,
+determines the event type—in this case, the _GATT Client Read Characteristic_
+event—and, if the application has registered for that event, executes the
+callback.
 
 {{< figure
 	src="./ace_bt_manager_core-gattc_ipc_handler-read-char-event.webp"
@@ -1009,7 +1012,7 @@ the application has registered for that event, executes the callback.
 
 One of the earlier issues was identifying the ABI incompatibilities. It turns
 out that `ace_bt` is still under active development, so there would be
-breaking changes in the ABI from version to version, such as the removal
+breaking changes in the ABI from version to version, such as the removal of
 certain functions, changes to the signature of others, and the introduction of
 new functions.
 
@@ -1083,11 +1086,11 @@ The `getSessionFor*` functions are used in the callback handler and return the
 same data with a mostly similar interface, so here we just needed to detect
 and call the correct symbol at runtime.
 
-Doing it this means I can avoid multiple builds. It also means applications
-don't need to worry about specific builds or finding out what ABI their
-`ace_bt` version includes. They can simply download the one KindleBT build for
-their architecture, and KindleBT will resolve the different ABI versions and
-use the correct symbols.
+Doing it this way means I can avoid multiple builds; it also means
+applications don't need to worry about downloading the correct build or
+figuring out what is the ABI of their included `ace_bt` library. They can
+simply download the one KindleBT build for their architecture, and KindleBT
+will resolve the different ABI versions and use the correct symbols.
 
 However, some of the newer APIs, such as `aceBT_bleReadCharacteristics`, do
 not have an older version. That meant that for these APIs, I had to reverse
@@ -1159,21 +1162,19 @@ status_t shim_bleReadCharacteristic(
 }
 ```
 
-If you are interested in seeing the rest of the reverse GATT Client
+If you are interested in seeing the rest of the reversed GATT Client
 operations, you can check the [KindleBT source code][KindleBT] and the
 `compat_ace` files.
 
 
 ## What's next
 
-
-
 Going forward I will be working on a Go service to allow remote page-turning
 within the native Kindle reader. It is fairly easy to call and use C code from
 a Go codebase thanks to CGO. First I would like to support the smart ring
 shown in the picture at the beginning of the article, but other devices could
 be implemented through generic Profiles. Support for [KOReader][] would also
-be nice. And it would be highly amusing to get a [Kobo Remote][] working in a
+be nice. And it would be highly amusing to get a [Kobo Remote][] working on a
 Kindle.
 
 I would also like to return to KindleBT and implement support for the missing
