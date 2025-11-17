@@ -2,6 +2,7 @@ baseURL = 'https://sighery.com/'
 languageCode = 'en-001'
 title = 'Rincon'
 theme = 'simplex'
+copyright = '© 2025 Sighery'
 
 disableKinds = ['taxonomy', 'term', 'sitemap']
 
@@ -12,7 +13,7 @@ disableKinds = ['taxonomy', 'term', 'sitemap']
     source = 'content'
     target = 'content'
     excludeFiles = [
-      "**/*.excalidraw"
+      '**/*.excalidraw'
     ]
 
 [menus]
