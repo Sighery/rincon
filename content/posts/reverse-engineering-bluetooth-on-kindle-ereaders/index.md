@@ -11,6 +11,7 @@ embedimage = "kindle-start.webp"
 	src="./kindle-start.webp"
 	alt="Kindle eReader with a smart ring"
 	caption="How it started"
+	fetchpriority="high"
 >}}
 
 For the longest time I read on an old Kindle 4 (2011), but in 2022 I finally
