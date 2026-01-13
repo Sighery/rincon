@@ -2,7 +2,7 @@ baseURL = 'https://sighery.com/'
 languageCode = 'en-001'
 title = 'Rincon'
 theme = 'simplex'
-copyright = '© 2025 Sighery'
+copyright = '© 2025-2026 Sighery'
 
 disableKinds = ['taxonomy', 'term', 'sitemap']
 
