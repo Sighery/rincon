@@ -239,6 +239,20 @@ main {
   text-align: left;
 }
 
+dl > dt {
+  font-style: oblique;
+  font-weight: 480;
+}
+
+dl > dt:not(:first-child) {
+  padding-top: 1em;
+}
+
+dl > dd {
+  padding-top: 0.5em;
+  margin-inline-start: 1.5em;
+}
+
 .article-item time {
   color: var(--tertiary-color);
   font-style: italic;
