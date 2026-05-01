@@ -269,14 +269,16 @@ blockquote {
   color: var(--tertiary-color);
 }
 
-blockquote>p::before {
-  content: "“";
+blockquote>p::before, blockquote>p::after {
   font-size: 1.2em;
 }
 
-blockquote>p::after {
+blockquote>p:first-child:before {
+  content: "“";
+}
+
+blockquote>p:last-child:after {
   content: "”";
-  font-size: 1.2em;
 }
 
 footer {
