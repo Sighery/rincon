@@ -11,6 +11,7 @@ embedimage = "collections.webp"
 	src="./collections.webp"
 	alt="Collections on a Kindle Colorsoft"
 	caption="Managing collections is a pain"
+	loading="eager"
 	fetchpriority="high"
 >}}
 
@@ -139,7 +140,6 @@ Our target for books is `p_type='Entry:Item'`.
 
 {{< figure
 	src="./entries-table.webp"
-	loading="lazy"
 	alt="Example of the Entries table"
 	caption="This table has 71 columns"
 >}}
@@ -151,7 +151,6 @@ table.
 
 {{< figure
 	src="./collections-table.webp"
-	loading="lazy"
 	alt="Example of the Collections table"
 	caption="Much easier to showcase"
 >}}
@@ -183,7 +182,6 @@ table. For the `Entries` table, we just need to filter by
 
 {{< figure
 	src="./collections-in-entries-table.webp"
-	loading="lazy"
 	alt="Sample of Collections in the Entries table"
 	caption="No `p_location` because they don't exist on disk"
 >}}
@@ -205,7 +203,6 @@ gets the proper reading progress tags out of the box.
 
 {{< figure
 	src="./p_percentFinished.webp"
-	loading="lazy"
 	alt="Sample of books and their read progress in the Entries table"
 	caption="You never know what data type you are going to get"
 >}}
@@ -228,7 +225,6 @@ a deterministic scheme, but I haven't looked into where the UUIDs come from.
 
 {{< figure
 	src="./p_thumbnail.webp"
-	loading="lazy"
 	alt="Sample of books and their thumbnails in the Entries table"
 	caption="I don't know what process generates these thumbnails yet"
 >}}
@@ -439,7 +435,6 @@ it was the perfect fit.
 	src="./rekreate-release.webp"
 	alt="Rekreate v0.1.0 release"
 	caption="With the one very obvious downside"
-	loading="lazy"
 	attr="<br>From Rekreate's v0.1.0 release"
 	attrlink="https://github.com/Sighery/rekreate/releases/tag/v0.1.0"
 >}}

@@ -17,10 +17,10 @@
     {{- if or (.Get "alt") (.Get "caption") }}
     alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
     {{- end -}}
-    {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}
+    {{- with .Get "loading" }} loading="{{ . }}"{{ else }} loading="lazy"{{ end -}}
     {{- with .Get "fetchpriority" }} fetchpriority="{{ . }}"{{ end -}}
     {{- with .Get "width" }} width="{{ . }}"{{ else with $resource }} width="{{ .Width }}"{{ end -}}
-    {{- with .Get "height" }} height="{{ . }}"{{ else with $resource }} height="{{ .Height}}"{{ end -}}
+    {{- with .Get "height" }} height="{{ . }}"{{ else with $resource }} height="{{ .Height }}"{{ end -}}
   ><!-- Closing img tag -->
   {{- if .Get "link" }}</a>{{ end -}}
   {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr") -}}

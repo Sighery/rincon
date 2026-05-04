@@ -11,6 +11,7 @@ embedimage = "kindle-start.webp"
 	src="./kindle-start.webp"
 	alt="Kindle eReader with a smart ring"
 	caption="How it started"
+	loading="eager"
 	fetchpriority="high"
 >}}
 
@@ -51,7 +52,6 @@ still works, including SSH!
 	src="./kindle-system.webp"
 	alt="Kindle system"
 	caption="I never said recent"
-	loading="lazy"
 >}}
 
 Most of this tooling is in various states of disrepair, but is still available
@@ -110,7 +110,6 @@ to get a help print. But one did turn out to be quite interesting, `ace_bt_cli`.
 	src="./ace_bt_cli.webp"
 	alt="ace_bt_cli CLI utility"
 	caption="One tool did have a help print, and a way to interact with the Bluetooth stack"
-	loading="lazy"
 >}}
 
 At this time, I still didn't understand how Bluetooth worked and couldn't
@@ -139,7 +138,6 @@ Characteristic supporting read, write, and notifications.
 	src="./raspberry-pi-pico-2w.webp"
 	alt="Raspberry Pi Pico 2W"
 	caption="Reversing is easier when you control the server component"
-	loading="lazy"
 >}}
 
 
@@ -170,7 +168,6 @@ in which we will focus primarily on BLE.
 	src="./bluetooth-profile-specifications.webp"
 	alt="Bluetooth profile specifications overview"
 	caption="There are many roles and they depend on whether a connection is established"
-	loading="lazy"
 	attr="<br>From Chris Svec @ https://embedded.fm/blog/ble-roles"
 	attrlink="https://embedded.fm/blog/ble-roles"
 >}}
@@ -230,7 +227,6 @@ Profile should work regardless of the manufacturer.
 {{< figure
 	src="./environmental-sensing-profile.webp"
 	alt="Role/Service Relationships of the Environmental Sensing Profile"
-	loading="lazy"
 	caption="In this profile Servers should at least implement the Environmental Sensing Service"
 	attr="<br>From the Environmental Sensing Service specification, Section 2.2"
 	attrlink="https://www.bluetooth.com/specifications/specs/html/?src=ESP_v1.0.1/out/en/index-en.html#UUID-b5e89d8f-5051-0d0b-4a4b-3b6d80f4984a"
@@ -251,7 +247,6 @@ clients. For the rest of this article we'll focus on Primary Services.
 {{< figure
 	src="service-architecture-overview.webp"
 	alt="Overview of a Service structure"
-	loading="lazy"
 	caption="Here a high-level overview of a Service structure"
 	attr="<br>From the Core Specification v6.0, Volume 1, Part A, Section 6.5"
 	attrlink="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-60/out/en/architecture,-change-history,-and-conventions/architecture.html#UUID-4ec2eac1-8869-c29a-35fa-e3e736f98aa5"
@@ -268,7 +263,6 @@ will be defined in the [Assigned Numbers specification][].
 	src="./environmental-sensing-service-characteristics.webp"
 	alt="Permitted Characteristics of the Environmental Sensing Service"
 	caption="Permitted Characteristics of the Environmental Sensing Service"
-	loading="lazy"
 	attr="<br>From the Bluetooth Assigned Numbers specification, Section 6.1.1"
 	attrlink="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Assigned_Numbers/out/en/Assigned_Numbers.pdf"
 >}}
@@ -282,7 +276,6 @@ structure of this Characteristic.
 {{< figure
 	src="./elevation-characteristic.webp"
 	alt="Elevation Characteristic structure"
-	loading="lazy"
 	attr="From the Bluetooth GATT Specification Supplement, Section 3.87"
 	attrlink="https://btprodspecificationrefs.blob.core.windows.net/gatt-specification-supplement/GATT_Specification_Supplement.pdf"
 >}}
@@ -310,7 +303,6 @@ later—notify.
 	src="./client-characteristic-configuration-descriptor.webp"
 	alt="Structure of the Client Characteristic Configuration Descriptor"
 	caption="Structure of the Client Characteristic Configuration Descriptor"
-	loading="lazy"
 	attr="<br>From Nordic Semiconductor's Bluetooth Low Energy Fundamentals course, Lesson 4"
 	attrlink="https://academy.nordicsemi.com/courses/bluetooth-low-energy-fundamentals/lessons/lesson-4-bluetooth-le-data-exchange/topic/services-and-characteristics/"
 >}}
@@ -364,7 +356,6 @@ support via the Characteristic Properties field.
 	src="./characteristic-properties.webp"
 	alt="Specification of the Characteristic Properties field"
 	caption="Specification of the Characteristic Properties field"
-	loading="lazy"
 	attr="<br>From the Core Specification v6.0, Volume 3, Part G, Section 3.3.1.1"
 	attrlink="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-60/out/en/host/generic-attribute-profile--gatt-.html#UUID-957d2ce5-401b-3cf3-1150-152d226887eb"
 >}}
@@ -421,7 +412,6 @@ the entire GATT "database" of this Server:
 	src="./pico-gatt-database.webp"
 	alt="Pico Server GATT Database"
 	caption="Pico Server GATT Database with three standard Services and a custom Service"
-	loading="lazy"
 >}}
 
 Now, let's take a closer look at this diagram. This server exposes four
@@ -757,7 +747,6 @@ we can discuss some of the differences later.
 	src="./kindle-bt-architecture.webp"
 	alt="Architecture of the Bluetooth stack on Kindles 5.17 and above"
 	caption="Architecture of the Bluetooth stack on Kindles 5.17 and above"
-	loading="lazy"
 >}}
 
 I would quickly mention that `major.minor.0` firmwares are limited to release
@@ -904,7 +893,6 @@ wait for events.
 	src="./btstack-main-loop.webp"
 	alt="Example code of the main loop of a BTstack implementation"
 	caption="Notice how we register handler callbacks for the Bluetooth packets<br>BTstack is used in the Raspberry Pi Pico SDK"
-	loading="lazy"
 	attr="<br>From the BTstack documentation, Chapter Examples, Section Main Application Setup"
 	attrlink="https://bluekitchen-gmbh.com/btstack/#examples/examples/#main-application-setup_1"
 >}}
@@ -984,7 +972,6 @@ for the BLE connection event, nor many other GATT Client events.
 	src="./kindlebt-gattc-callback-handler.webp"
 	alt="The callback handler for GATT Client operations reimplemented in KindleBT"
 	caption="The GATT Client callback handler reversed and reimplemented in KindleBT"
-	loading="lazy"
 	attr="<br>From the KindleBT codebase"
 	attrlink="https://github.com/Sighery/kindlebt/blob/7a1a53f4ad02e0a4c11f330c2da6625d4388e765/src/compat_ace_handler.c#L9-L194"
 >}}
@@ -1005,7 +992,6 @@ callback.
 	src="./ace_bt_manager_core-gattc_ipc_handler-read-char-event.webp"
 	alt="Decompiled code of the GATT Client event handler and Read Characteristic case in btmanagerd/ace_bt_manager_core"
 	caption="Here that same Read Characteristic event on the `btmanagerd` side"
-	loading="lazy"
 >}}
 
 
