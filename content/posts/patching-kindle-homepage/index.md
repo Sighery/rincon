@@ -354,9 +354,6 @@ internal flag, or it might just be unused. Either way, it is irrelevant to
 this example so I will skip it.
 { class = "aside" }
 
-<!-- TODO: Maybe better if I leave this out? -->
-<!-- Let me identify the arguments then: -->
-
 `Arg1`
 : `Reg8:0`, the global object—previously loaded by `LoadGlobalObject`.
 
@@ -1345,12 +1342,11 @@ I tried a few different variations of this, returning `null`, `undefined`, and
 a few other such falsy constants. But none of them worked on my PW5 with Soft
 Float (`< 5.16.3`) firmware.
 
-<!-- TODO: Add this if it's perhaps a picture of the Kindle itself?
 {{< figure
-	src="./kpw5-non-working-patch.webp"
-	alt="Kindle homepage showing a blank screen after a non-working patch"
-	caption="It just causes a literal blank screen homepage"
->}} -->
+	src="./bad-patch-whitescreen.webp"
+	alt="Kindle homepage showing a white screen after a non-working patch"
+	caption="It just causes a literal white screen homepage"
+>}}
 
 
 ### Trying a different approach
