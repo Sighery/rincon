@@ -36,14 +36,12 @@
     <meta name="twitter:image" content="{{ $twresized.Permalink }}" />
   {{ end }}
 {{ else }}
-  {{ $site_title := "Sighery's Rincon" }}
-  <meta property="og:title" content="{{ $site_title }}" />
-  <meta name="twitter:title" content="{{ $site_title }}" />
+  <meta property="og:title" content="{{ .Site.Title }}" />
+  <meta name="twitter:title" content="{{ .Site.Title }}" />
 
-  {{ $site_description := "Silly little place where I write about things" }}
-  <meta property="og:description" content="{{ $site_description }}" />
-  <meta property="description" content="{{ $site_description }}" />
-  <meta property="twitter:description" content="{{ $site_description }}" />
+  <meta property="og:description" content="{{ .Site.Params.subtitle }}" />
+  <meta property="description" content="{{ .Site.Params.subtitle }}" />
+  <meta property="twitter:description" content="{{ .Site.Params.subtitle }}" />
 
   <meta property="og:url" content="{{ .Permalink }}" />
   <link rel="canonical" href="{{ .Permalink }}" />

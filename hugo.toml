@@ -4,6 +4,9 @@ title = 'Rincon'
 theme = 'simplex'
 copyright = '© 2025-2026 Sighery'
 
+[params]
+  subtitle = 'Silly little place where I write about things'
+
 disableKinds = ['taxonomy', 'term', 'sitemap']
 
 [module]
