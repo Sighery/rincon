@@ -288,25 +288,21 @@ footer {
 
 .footer-links {
   display: grid;
-  grid-template-areas:
-    "sitemap socials work";
+  grid-template-columns: repeat(auto-fit, minmax(40px, max-content));
   align-items: baseline;
-  gap: 4rem;
+  gap: 2rem 4rem;
   justify-content: center;
 }
 
-footer .sitemap {
-  grid-area: sitemap;
-  text-align: left;
-}
-
-footer .socials {
-  grid-area: socials;
+.footer-links > div {
   text-align: center;
 }
 
-footer .work {
-  grid-area: work;
+.footer-links > div:first-child {
+  text-align: left;
+}
+
+.footer-links > div:last-child {
   text-align: right;
 }
 
