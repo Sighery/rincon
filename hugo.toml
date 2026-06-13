@@ -3,10 +3,6 @@ languageCode = 'en-001'
 title = 'Rincon'
 theme = 'simplex'
 copyright = '© 2025-2026 Sighery'
-
-[params]
-  subtitle = 'Silly little place where I write about things'
-
 disableKinds = ['taxonomy', 'term', 'sitemap']
 
 [module]
@@ -50,3 +46,35 @@ disableKinds = ['taxonomy', 'term', 'sitemap']
     noClasses = false
     tabWidth = 4
     wrapperClass = 'highlight'
+
+
+[params]
+  subtitle = 'Silly little place where I write about things'
+
+  # Footer section
+  [[params.footer_links]]
+    class = "sitemap"
+    menuID = "main"
+
+  [[params.footer_links]]
+    class = "socials"
+
+    [[params.footer_links.links]]
+      name = "GitHub"
+      link = "https://github.com/Sighery"
+    [[params.footer_links.links]]
+      name = "Twitch"
+      link = "https://twitch.com/Sighery"
+    [[params.footer_links.links]]
+      name = "Twitter"
+      link = "https://twitter.com/Sighery"
+
+  [[params.footer_links]]
+    class = "work"
+
+    [[params.footer_links.links]]
+      name = "LinkedIn"
+      link = "https://www.linkedin.com/in/nicholas-tarta/"
+    [[params.footer_links.links]]
+      name = "Email"
+      link = "mailto:contact@sighery.com"

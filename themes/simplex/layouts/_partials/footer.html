@@ -1,26 +1,23 @@
 <div class="footer-links">
-
-{{- $page := .page }}
-{{- $menuID := .menuID }}
-
-{{- with index site.Menus $menuID }}
-  <div class="sitemap">
-    <ul>
-      {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
-    </ul>
-  </div>
+{{- $page := . -}}
+{{ range .Site.Params.footer_links -}}
+  {{- $section := . -}}
+  {{- if eq .class "sitemap" -}}
+    {{- with index site.Menus .menuID }}
+      <div class="{{ $section.class }}">
+        <ul>
+          {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+        </ul>
+      </div>
+    {{- end }}
+  {{- else -}}
+    <div class="{{ $section.class }}">
+      <ul>
+        {{- range .links }}
+         <li><a href="{{ .link }}" target="_blank">{{ .name }}</a></li>
+        {{- end }}
+      </ul>
+    </div>
+  {{- end -}}
 {{- end }}
-  <div class="socials">
-    <ul>
-      <li><a href="https://github.com/Sighery" target="_blank">GitHub</a></li>
-      <li><a href="https://twitch.com/Sighery" target="_blank">Twitch</a></li>
-      <li><a href="https://twitter.com/Sighery" target="_blank">Twitter</a></li>
-    </ul>
-  </div>
-  <div class="work">
-    <ul>
-      <li><a href="https://www.linkedin.com/in/nicholas-tarta/" target="_blank">LinkedIn</a></li>
-      <li><a href="mailto:contact@sighery.com">Email</a></li>
-    </ul>
-  </div>
 </div>
