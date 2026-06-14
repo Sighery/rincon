@@ -1,5 +1,5 @@
 baseURL = 'https://sighery.com/'
-languageCode = 'en-001'
+locale = 'en-001'
 title = 'Rincon'
 theme = 'simplex'
 copyright = '© 2025-2026 Sighery'
@@ -8,11 +8,10 @@ disableKinds = ['taxonomy', 'term', 'sitemap']
 [module]
   [[module.mounts]]
     disableWatch = false
-    lang = ''
     source = 'content'
     target = 'content'
-    excludeFiles = [
-      '**/*.excalidraw'
+    files = [
+      '! **/*.excalidraw'
     ]
 
 [menus]
