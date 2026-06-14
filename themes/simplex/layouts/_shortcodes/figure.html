@@ -14,7 +14,8 @@
   {{- end -}}
 
   {{ if strings.HasSuffix (lower $src) ".webm" -}}
-    <video autoplay loop muted playsinline class="gif-video" src="{{ $src }}"
+    <video class="gif-video" src="{{ $src }}"
+      autoplay loop muted playsinline loading="lazy" preloading="metadata"
       {{- if or (.Get "alt") (.Get "caption") }}
         aria-label="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify | plainify }}{{ end }}"
       {{- end -}}
