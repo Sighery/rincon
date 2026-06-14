@@ -1170,7 +1170,7 @@ versions and devices. The future of the project may be to build directly on
 top of Bluedroid and have our own server daemon and library components,
 bypassing `btmanagerd` and `ace_bt` entirely.
 
-{{< gifvideo
+{{< figure
 	src="./kindlebt_go-sneak-peek.webm"
 	alt="Sneak peek of future projects using KindleBT"
 	caption="It's a Go!"
