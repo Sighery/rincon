@@ -205,6 +205,7 @@ h6.title {
 
 header {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   color: var(--tertiary-color);
 }
@@ -215,8 +216,8 @@ nav {
 
 nav ul {
   display: flex;
+  flex-wrap: wrap;
   list-style: none;
-  margin-left: 1rem;
   column-gap: 2rem;
 }
 
@@ -239,16 +240,16 @@ main {
   text-align: left;
 }
 
-dl > dt {
+dl>dt {
   font-style: oblique;
   font-weight: 480;
 }
 
-dl > dt:not(:first-child) {
+dl>dt:not(:first-child) {
   padding-top: 1em;
 }
 
-dl > dd {
+dl>dd {
   padding-top: 0.5em;
   margin-inline-start: 1.5em;
 }
@@ -269,7 +270,8 @@ blockquote {
   color: var(--tertiary-color);
 }
 
-blockquote>p::before, blockquote>p::after {
+blockquote>p::before,
+blockquote>p::after {
   font-size: 1.2em;
 }
 
@@ -294,15 +296,15 @@ footer {
   justify-content: center;
 }
 
-.footer-links > div {
+.footer-links>div {
   text-align: center;
 }
 
-.footer-links > div:first-child {
+.footer-links>div:first-child {
   text-align: left;
 }
 
-.footer-links > div:last-child {
+.footer-links>div:last-child {
   text-align: right;
 }
 
@@ -335,6 +337,10 @@ footer li {
 
   nav {
     font-size: 1.2em;
+  }
+
+  nav ul {
+    margin-left: 1rem;
   }
 
   .page-title {
@@ -413,7 +419,7 @@ footer li {
   }
 
   header {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .page-title {
@@ -453,5 +459,16 @@ footer li {
   footer {
     margin-top: 3rem;
     padding-bottom: 2rem;
+  }
+
+  @media only screen and (max-width: 500px) {
+    header>h1 {
+      padding-right: 40px;
+      margin-bottom: 0px;
+    }
+
+    header>nav>ul {
+      padding-left: 0px;
+    }
   }
 }
