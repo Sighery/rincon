@@ -1,10 +1,27 @@
-{{- $link := .Destination -}}
-{{- $isExternal := strings.HasPrefix $link "http" -}}
-{{- if not $isExternal -}}
-  {{- $isExternal := strings.HasPrefix $link "//" -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $href := $u.String -}}
+{{- if strings.HasPrefix $u.String "#" -}}
+  {{- $href = printf "%s#%s" .PageInner.RelPermalink $u.Fragment -}}
+{{- else if and $href (not $u.IsAbs) -}}
+  {{- $path := strings.TrimPrefix "./" $u.Path -}}
+  {{- with or
+    ($.PageInner.GetPage $path)
+    ($.PageInner.Resources.Get $path)
+    (resources.Get $path)
+  -}}
+    {{- $href = .RelPermalink -}}
+    {{- with $u.RawQuery -}}
+      {{- $href = printf "%s?%s" $href . -}}
+    {{- end -}}
+    {{- with $u.Fragment -}}
+      {{- $href = printf "%s#%s" $href . -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}
-
-<a href="{{ .Destination | safeURL }}"
-  {{- with .Title }} title="{{ . }}"{{ end }}
+{{- $link := .Destination -}}
+{{- $isExternal := or (strings.HasPrefix $link "http") (strings.HasPrefix $link "//") -}}
+<a href="{{ $href }}"
+  {{- with .Title }} title="{{ . }}" {{- end }}
   {{- if $isExternal }} target="_blank" rel="noopener"{{ end -}}
 >{{ .Text | safeHTML }}</a>
+{{- /**/ -}}
