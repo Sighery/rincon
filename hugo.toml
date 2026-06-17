@@ -48,7 +48,7 @@ disableKinds = ['taxonomy', 'term', 'sitemap']
 
 
 [params]
-  subtitle = 'Silly little place where I write about things'
+  description = 'Silly little place where I write about things'
 
   # Footer section
   [[params.footer_links]]

@@ -13,39 +13,30 @@
 {{ end }}
 <title>{{ $title }}</title>
 
-{{ if and (eq .Type "posts") (eq .Kind "page") }}
-  <meta property="og:title" content="{{ .Title }}" />
-  <meta name="twitter:title" content="{{ .Title }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<link rel="canonical" href="{{ .Permalink }}" />
 
-  {{ $summary := .Summary | plainify | strings.TrimSpace }}
-  <meta property="og:description" content="{{ $summary }}" />
-  <meta name="description" content="{{ $summary }}" />
-  <meta name="twitter:description" content="{{ $summary }}" />
+{{- with or .Params.title .Site.Params.title -}}
+  <meta property="og:title" content="{{ . }}" />
+  <meta name="twitter:title" content="{{ . }}" />
+{{- end -}}
 
-  <meta property="og:url" content="{{ .Permalink }}" />
-  <link rel="canonical" href="{{ .Permalink }}" />
+{{- with or .Description .Summary .Site.Params.description | plainify | htmlUnescape | strings.TrimSpace -}}
+  <meta property="og:description" content="{{ . }}" />
+  <meta name="description" content="{{ . }}" />
+  <meta name="twitter:description" content="{{ . }}" />
+{{- end -}}
 
-  {{ with .Resources.Get .Params.embedimage }}
-    {{ $ogresized := .Fit "1200x630" }}
-    <meta property="og:image" content="{{ $ogresized.Permalink }}" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+{{- with .Resources.Get .Params.embedimage -}}
+  {{ $ogresized := .Fit "1200x630" }}
+  <meta property="og:image" content="{{ $ogresized.Permalink }}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-    {{ $twresized := .Fit "1200x675" }}
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="{{ $twresized.Permalink }}" />
-  {{ end }}
-{{ else }}
-  <meta property="og:title" content="{{ .Site.Title }}" />
-  <meta name="twitter:title" content="{{ .Site.Title }}" />
-
-  <meta property="og:description" content="{{ .Site.Params.subtitle }}" />
-  <meta property="description" content="{{ .Site.Params.subtitle }}" />
-  <meta property="twitter:description" content="{{ .Site.Params.subtitle }}" />
-
-  <meta property="og:url" content="{{ .Permalink }}" />
-  <link rel="canonical" href="{{ .Permalink }}" />
-{{ end }}
+  {{ $twresized := .Fit "1200x675" }}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="{{ $twresized.Permalink }}" />
+{{- end -}}
 
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}
