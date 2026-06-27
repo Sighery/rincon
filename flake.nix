@@ -11,11 +11,19 @@
           inherit system;
         };
       in {
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            hugo
-            exiftool
-          ];
+        devShells = {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              hugo
+              exiftool
+            ];
+          };
+
+          ci = pkgs.mkShellNoCC {
+            packages = with pkgs; [
+              hugo
+            ];
+          };
         };
       }
     );
