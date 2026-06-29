@@ -4,12 +4,12 @@ draft = true
 title = "{{ replace .File.ContentBaseName '_' ' ' | title }}"
 summary = ""
 series = []
-embedimage = ""
 +++
 
 {{< figure
-	src=""
+	src="feature.webp"
 	alt=""
 	caption=""
+	loading="eager"
 	fetchpriority="high"
 >}}

@@ -4,11 +4,10 @@ draft = false
 title = "Transferring books and progress between Kindles"
 summary = "If you have multiple Kindles you switch between, you will find that it is pretty much impossible to sync Kindles without using their cloud"
 series = ["Kindle content catalogue"]
-embedimage = "collections.webp"
 +++
 
 {{< figure
-	src="./collections.webp"
+	src="./feature.webp"
 	alt="Collections on a Kindle Colorsoft"
 	caption="Managing collections is a pain"
 	loading="eager"

@@ -13,30 +13,7 @@
 {{ end }}
 <title>{{ $title }}</title>
 
-<meta property="og:url" content="{{ .Permalink }}" />
-<link rel="canonical" href="{{ .Permalink }}" />
-
-{{- with or .Params.title .Site.Params.title -}}
-  <meta property="og:title" content="{{ . }}" />
-  <meta name="twitter:title" content="{{ . }}" />
-{{- end -}}
-
-{{- with or .Description .Summary .Site.Params.description | plainify | htmlUnescape | strings.TrimSpace -}}
-  <meta property="og:description" content="{{ . }}" />
-  <meta name="description" content="{{ . }}" />
-  <meta name="twitter:description" content="{{ . }}" />
-{{- end -}}
-
-{{- with .Resources.Get .Params.embedimage -}}
-  {{ $ogresized := .Fit "1200x630" }}
-  <meta property="og:image" content="{{ $ogresized.Permalink }}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-  {{ $twresized := .Fit "1200x675" }}
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="{{ $twresized.Permalink }}" />
-{{- end -}}
+{{ partial "opengraph.html" . }}
 
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}

@@ -4,11 +4,10 @@ draft = false
 title = "React Native, Hermes bytecode, and the Kindle homepage"
 summary = "Why are there ads on my Kindle homepage?"
 series = ["Kindle Hermes"]
-embedimage = "main.webp"
 +++
 
 {{< figure
-	src="main.webp"
+	src="feature.webp"
 	alt="Homepage of a Kindle Paperwhite 11th-generation"
 	caption="Why are there ads on my Kindle homepage?"
 	loading="eager"

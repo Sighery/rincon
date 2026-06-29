@@ -4,11 +4,10 @@ draft = false
 title = "Reverse engineering Bluetooth on Amazon Kindle eReaders"
 summary = "A journey of learning C and reverse engineering to be more efficiently lazy"
 series = ["Hacking Bluetooth on Kindle eReaders"]
-embedimage = "kindle-start.webp"
 +++
 
 {{< figure
-	src="./kindle-start.webp"
+	src="./feature.webp"
 	alt="Kindle eReader with a smart ring"
 	caption="How it started"
 	loading="eager"
