@@ -66,9 +66,9 @@ Hermes bytecode.
 ## Hermes bytecode
 
 Initially I was planning on just getting the latest React Native and writing a
-simple app, to disassembling the bytecode and learn off that. This already
-proved challenging, as there is no official Linux target. But that wasn't the
-only issue.
+simple app, so I could disassemble the bytecode and learn off that. This
+already proved challenging, as there is no official Linux target. But that
+wasn't the only issue.
 
 The Hermes bytecode is not yet stable. The bytecode is only runnable by the
 same Hermes version that produced it. At the time of writing, Hermes is on
