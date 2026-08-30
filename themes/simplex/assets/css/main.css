@@ -214,6 +214,10 @@ nav {
   font-size: 18px;
 }
 
+.site-title a {
+  font-weight: bold;
+}
+
 header>nav>ul {
   display: flex;
   flex-wrap: wrap;

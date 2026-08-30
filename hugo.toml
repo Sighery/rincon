@@ -16,17 +16,28 @@ disableKinds = ['taxonomy', 'term', 'sitemap']
 
 [menus]
   [[menus.main]]
+    name = 'RSS'
+    # pageRef won't link it
+    url = '/index.xml'
+    weight = 10
+
+  [[menus.main]]
+    name = 'About'
+    pageRef = '/about'
+    weight = 20
+
+  [[menus.footer]]
     name = 'Home'
     pageRef = '/'
     weight = 10
 
-  [[menus.main]]
+  [[menus.footer]]
     name = 'RSS'
     # pageRef won't link it
     url = '/index.xml'
     weight = 20
 
-  [[menus.main]]
+  [[menus.footer]]
     name = 'About'
     pageRef = '/about'
     weight = 30
@@ -58,7 +69,7 @@ disableKinds = ['taxonomy', 'term', 'sitemap']
   # Footer section
   [[params.footer_links]]
     class = "sitemap"
-    menuID = "main"
+    menuID = "footer"
 
   [[params.footer_links]]
     class = "socials"
