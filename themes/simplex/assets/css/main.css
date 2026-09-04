@@ -5,6 +5,8 @@
   --tertiary-color: #3f3f3f;
   --shadow-color: #868686;
 
+  --code-pill: #add8e6;
+
   --pre-color: #f8f8f2;
   --pre-background: #272822;
 }
@@ -97,8 +99,6 @@
 
 .highlight {
   padding: 0;
-  margin-top: 1.5rem;
-  margin-bottom: 2.5rem;
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 3px 3px 2px var(--shadow-color);
@@ -128,6 +128,37 @@ pre code {
   white-space: pre-wrap;
 }
 
+.codeblock-detail {
+  cursor: pointer;
+}
+
+.figure-code {
+  margin: 0;
+  padding: 0;
+}
+
+.figure-code figcaption {
+  text-align: center;
+}
+
+.render-hook-codeblock {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.render-hook-file, .render-hook-title {
+  display: inline-block;
+  padding: 0.5rem;
+  padding-bottom: 0.4rem;
+  margin-left: 1.5rem;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background-color: var(--code-pill);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: "Fantasque Sans Mono", monospace;
+}
+
 body {
   color: #222;
   font-family: "Roboto Serif", serif;
@@ -146,12 +177,15 @@ main video {
 figure {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   margin-left: 0;
   margin-right: 0;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+.figure-media {
+  align-items: center;
+  text-align: center;
 }
 
 figure img,
