@@ -43,14 +43,14 @@
       {{ with (.Get "title") -}}
         <h4>{{ . }}</h4>
       {{- end -}}
-      {{- if or (.Get "caption") (.Get "attr") -}}<p>
-          {{- .Get "caption" | markdownify -}}
-          {{- with .Get "attrlink" }}
-            <a href="{{ . }}" target="_blank" rel="noopener">
-          {{- end -}}
-          {{- .Get "attr" | markdownify -}}
-          {{- if .Get "attrlink" }}</a>{{ end }}</p>
+      {{ with .Get "caption" }}<p>{{ . | markdownify }}</p>{{ end }}
+      {{- if or (.Get "attrlink") (.Get "attr") }}<p>{{ end }}
+      {{- with .Get "attrlink" -}}
+        <a href="{{ . }}" target="_blank" rel="noopener">
       {{- end }}
+      {{- with .Get "attr" }}{{ . | markdownify }}{{ end }}
+      {{- if .Get "attrlink" }}</a>{{ end }}
+      {{- if or (.Get "attrlink") (.Get "attr")}}</p>{{ end }}
     </figcaption>
   {{- end }}
 </figure>

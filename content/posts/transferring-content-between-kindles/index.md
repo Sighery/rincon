@@ -434,7 +434,7 @@ it was the perfect fit.
 	src="./rekreate-release.webp"
 	alt="Rekreate v0.1.0 release"
 	caption="With the one very obvious downside"
-	attr="<br>From Rekreate's v0.1.0 release"
+	attr="From Rekreate's v0.1.0 release"
 	attrlink="https://github.com/Sighery/rekreate/releases/tag/v0.1.0"
 >}}
 

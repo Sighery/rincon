@@ -132,20 +132,6 @@ pre code {
   cursor: pointer;
 }
 
-.figure-code {
-  margin: 0;
-  padding: 0;
-}
-
-.figure-code figcaption {
-  text-align: center;
-}
-
-.codeblock {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
 .codeblock-file, .codeblock-title {
   display: inline-block;
   padding: 0.5rem;
@@ -156,7 +142,6 @@ pre code {
   background-color: var(--code-pill);
   font-size: 1rem;
   line-height: 1.5;
-  font-family: "Fantasque Sans Mono", monospace;
 }
 
 body {
@@ -185,7 +170,6 @@ figure {
 
 .figure-media {
   align-items: center;
-  text-align: center;
 }
 
 figure img,
@@ -194,9 +178,14 @@ figure video {
 }
 
 figure figcaption {
-  margin-top: -4px;
+  margin-top: 0.65rem;
   font-style: italic;
   font-size: 0.9em;
+  text-align: center;
+}
+
+figcaption>p {
+  margin: 0;
 }
 
 h1,

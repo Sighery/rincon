@@ -66,10 +66,7 @@ may also specify the following parameters:
     <summary>{{ $summary }}</summary>
 {{- end }}
 
-{{- if or $caption $attr $attrlink }}
-  <figure class="figure-code">
-{{- end }}
-
+<figure class="figure-code">
 <div x-data class="codeblock">
   {{- with $file -}}
     <div class="codeblock-file">{{ . | markdownify }}</div>
@@ -89,23 +86,19 @@ may also specify the following parameters:
 
 {{- if or $caption $attr $attrlink }}
   <figcaption>
-    {{- if $caption -}}<p>
-      {{- $caption | markdownify -}}
-      {{- if $attrlink -}}
-        <a href="{{ $attrlink }}" target="_blank" rel="noopener">
-      {{- end -}}
-      {{- $attr | markdownify -}}
-      {{- if $attrlink }}</a>{{ end -}}
-    </p>{{- end -}}
+    {{ with $caption }}<p>{{ $caption | markdownify }}</p>{{ end }}
+    {{ if or $attrlink $attr }}<p>{{ end }}
+    {{- with $attrlink -}}
+      <a href="{{ . }}" target="_blank" rel="noopener">
+    {{- end }}
+    {{- $attr | markdownify }}
+    {{- if $attrlink }}</a>{{ end }}
+    {{- if or $attrlink $attr }}</p>{{ end }}
   </figcaption>
 {{- end }}
 
 </div>
-
-
-{{- if or $caption $attr $attrlink }}
-  </figure>
-{{- end }}
+</figure>
 
 {{- if $details }}
   </details>
