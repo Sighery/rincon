@@ -167,6 +167,10 @@ figure {
   padding-bottom: 1rem;
 }
 
+figure:first-of-type:has(img[src*="/feature"]) {
+  padding-bottom: 2rem;
+}
+
 .figure-media {
   align-items: center;
 }
