@@ -162,10 +162,9 @@ main video {
 figure {
   display: flex;
   flex-direction: column;
-  margin-left: 0;
-  margin-right: 0;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  margin: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .figure-media {
