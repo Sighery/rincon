@@ -163,6 +163,7 @@ body {
   font-family: "Roboto Serif", serif;
   font-weight: 400;
   line-height: 1.5;
+  word-break: break-word;
 }
 
 main img,
