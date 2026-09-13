@@ -150,7 +150,8 @@ pre code {
   display: inline-block;
   padding: 0.5rem;
   padding-bottom: 0.4rem;
-  margin-left: 1.5rem;
+  margin-left: 0.95rem;
+  margin-right: 0.95rem;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   background-color: var(--code-pill);
