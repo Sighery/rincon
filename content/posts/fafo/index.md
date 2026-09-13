@@ -1,8 +1,8 @@
 +++
-date = "2026-07-10T00:00:00+00:00"
-draft = true
+date = "2026-09-13T00:00:00+00:00"
+draft = false
 title = "FAFO: Blocking malicious traffic on my NixOS server"
-summary = "You really should set up fail2ban"
+summary = "You really should set up Fail2Ban"
 series = ["Self-Hosting", "NixOS", "Nginx", "Fail2Ban"]
 +++
 
@@ -128,12 +128,12 @@ This is the whole Nix config for this filter and jail. It is not the easiest
 to follow if you're not familiar with Nix and the Fail2Ban module, so I will
 replicate the steps for a non-declarative distribution.
 
-First off we create a new text file, lines 6–9. You can focus on lines 7–8
+First off it creates a new text file, lines 6–9. You can focus on lines 7–8
 which will be the exact file contents, everything around it is the Nix
 machinery.
 
-Nix will put any created files [in the store][Nix store]. In line 24 we are
-linking the store file into the `/etc/fail2ban/filter.d/nginx-444.local` path
+Nix will put any created files [in the store][Nix store]. In line 24 it links
+the file from the store into the `/etc/fail2ban/filter.d/nginx-444.local` path
 Fail2Ban will expect by default.
 
 Finally, lines 13–21 set up the jail using this new filter.
@@ -182,20 +182,21 @@ in
 }
 ```
 
-Like before, `pkgs.writeText` on line 4 is Nix-specific. Esentially, it will
-create a file with the contents between the double single quotes—lines 5–9—in
-the Nix store.
+Like before, `pkgs.writeText` on line 4 is Nix-specific. Again, it will create
+a file with the contents between the double single quotes—lines 5–9—in the Nix
+store.
 
-The Nginx map will take in a source variable—`$request_method`, it will
-pattern match it—the block inside the brackets, and will put the result in the
-new variable—`$is_attack_method`. By default it blocks every method—line 6—and
-returns `1`—`true`. Then it explicitly allows `GET` and `HEAD` requests by
-setting those to `0`—`false`.
+Nginx maps take in one or more source variables—here just `$request_method` on
+line 5, and produce an output variable—`$is_attack_method` on the same line.
+The inside of the block is where the pattern matching happens. Any
+`$request_method` value will by default return `1`—`true`. Unless it matches
+the strings `GET` or `HEAD`, in which case will return `0`—false.
 
-The file with this map can be then included in the `http` block—line 15, and
-used in the `server` block—line 20.
+One can declare the map variables directly in the `http` block, but here I am
+declaring them on an external file I include on line 15. Then it is used in
+the `server` block—line 20.
 
-```nginx { title="Will produce this abbreviated Nginx config" }
+```nginx { title="Will produce this condensed Nginx config" }
 http {
   include /nix/store/k5rjxmrn92pjpwjpkwn60bp9s52170q4-nginx-forbidden-maps.conf;
 
@@ -207,19 +208,17 @@ http {
 }
 ```
 
-This is a site without a backend, that serves only static files, with no
-JavaScript. A normal user browsing the site will never be making `POST`,
-`PUT`, `PATCH`, and other requests.
-
-This, coupled with the previous Fail2Ban jail, will immediately ban any
-malicious requests prodding at these unused HTTP methods.
+This is a site without a backend and no JavaScript, that serves only static
+files. A normal user browsing the site will never be making `POST`, `PUT`,
+`PATCH`, etc. requests. This, coupled with the previous Fail2Ban jail, will
+immediately ban any malicious requests prodding at these unused HTTP methods.
 
 ### Blocking unused endpoints
 
-Same way as the HTTP methods are blocked, we can also use a map with
-`$request_uri` to block known attack endpoints that are not in use. This could
-hit some browser users that try to prod the website by typing in these URLs,
-but then again: FAFO.
+Same way the HTTP methods are blocked, we can use another map with
+`$request_uri` to block known attack endpoints that are not in use. This is
+more likely to affect an actual user, if they go around typing known attack
+vector URLs in their browser. But then again: FAFO.
 
 ```nix { attr="From this server's NixOS configuration" attrlink="https://github.com/Sighery/dotfiles/blob/570bd81e17cdb3bce54d5422832e1fbc810d4a6a/hosts/wilem/nginx.nix" }
 { pkgs, ... }:
@@ -324,23 +323,21 @@ in
 }
 ```
 
-This one is a combination of pattern matches based on the URL.
-[`$request_uri`][$request_uri] contains the full request URI with arguments so
-I use to block common attack endpoints. My site uses no PHP, nor are there any
-links to PHP files, so no normal user browsing would end up in `/index.php`
+[`$request_uri`][$request_uri] contains the full request URI I use to match
+common attack endpoints. My site uses no PHP, nor are there any links to PHP
+files, so no normal user browsing the site would end up in `/index.php`.
 
 The previously linked [map variables] documentation explains a bit more of the
 string matching syntax as well as the matching priority.
 
-[`$uri`][$uri] matches for path traversal attacks. Although honestly I am not
-quite sure it is working.
+[`$uri`][$uri] matches for path traversal attacks. Although, honestly, I am
+not quite sure it is currently working.
 
-[`$args`][$args] matches query params. I might be able to match them as part
-of `$request_uri` too, but I found it easier to just match them here
-explicitly.
+[`$args`][$args] matches query params. Supposedly, you can match them as part
+of `$request_uri` too, but I found it easier to match them here explicitly.
 
-Then I put the combination of all these three matches into `$block_request`.
-Here I just check for an OR condition, whether any of the maps was `1`—`true`.
+Then I put the combination of these three matches into `$block_request`. Here
+I simply check for an OR condition, whether any of the maps was `1`—`true`.
 
 ### Multiple 404 in a short timespan
 
@@ -373,13 +370,16 @@ in
 }
 ```
 
-Here I've set it so ten 404 within ten seconds will trigger a ban.
+Here I have set a Fail2Ban filter and jail so ten 404 requests within ten
+seconds will trigger a ban. This might be better solved through
+[Nginx's request limits][nginx limit_req], which would also kick in much
+earlier than the Fail2Ban processing and eventual ban.
 
 ### Some RDP request
 
 Weird requests with `Cookie: mstshash=Administr` strings.
-[This article][RDP attack] has a good write-up. Ideally I would also like to
-match them from Nginx directly and return a 444 early, but clue how to.
+[This article][RDP attack] has a good write-up. I would like to block them
+directly from Nginx but I haven't found a way to do it yet.
 
 
 ```nix { attr="From this server's NixOS configuration" attrlink="https://github.com/Sighery/dotfiles/blob/570bd81e17cdb3bce54d5422832e1fbc810d4a6a/hosts/wilem/fail2ban.nix" }
@@ -394,7 +394,7 @@ let
   '';
 in
 {
-  jails.nginx-rdp-discovery.settings = {
+  services.fail2ban.jails.nginx-rdp-discovery.settings = {
     enabled = true;
     filter = "nginx-rdp-discovery";
     backend = "auto";
@@ -427,7 +427,7 @@ let
   '';
 in
 {
-  jails.nginx-ssh-probe.settings = {
+  services.fail2ban.jails.nginx-ssh-probe.settings = {
     enabled = true;
     filter = "nginx-ssh-probe";
     backend = "auto";
@@ -460,7 +460,7 @@ let
   '';
 in
 {
-  jails.nginx-tls-handshake.settings = {
+  services.fail2ban.jails.nginx-tls-handshake.settings = {
     enabled = true;
     filter = "nginx-tls-handshake";
     backend = "auto";
@@ -477,8 +477,8 @@ in
 
 ## Included Nginx filters
 
-So far I have listed custom filters I have wrotten. Fail2Ban also includes a
-few useful Nginx filters. For me in NixOS, these are also in
+So far I have listed custom filters I have written. Fail2Ban also includes a
+few useful Nginx filters. In NixOS, these are also available in
 `/etc/fail2ban/filters.d/`.
 
 ### HTTP Auth errors
@@ -514,7 +514,7 @@ services.fail2ban.jails.nginx-forbidden.settings = {
 ### 400 Bad Request
 
 Defined [here][Fail2Ban nginx-bad-request filter]. The filter is defined for
-systemd logs, but I keep my access logs in a separate file, so I need to
+systemd logs, but I keep my access logs in `access.log`, so I need to
 overwrite the source.
 
 ```nix { attr="From this server's NixOS configuration" attrlink="https://github.com/Sighery/dotfiles/blob/570bd81e17cdb3bce54d5422832e1fbc810d4a6a/hosts/wilem/fail2ban.nix#L83-L91" }
@@ -532,9 +532,9 @@ services.fail2ban.jails.jails.nginx-bad-request.settings = {
 ### Botsearch: Services prodding
 
 Defined [here][Fail2Ban nginx-botsearch filter]. Similar to my custom Nginx
-map blocking known attack endpoints, this filter includes a small subset of
-these. I defined it twice so it uses both the file access log, as well as the
-error logs that get sent to journal.
+map—`$is_attack_req`, blocking known attack endpoints—this filter includes a
+small subset of those. I defined it twice so it uses both the file access log,
+as well as the error logs that get sent to journal.
 
 ```nix { attr="From this server's NixOS configuration" attrlink="https://github.com/Sighery/dotfiles/blob/570bd81e17cdb3bce54d5422832e1fbc810d4a6a/hosts/wilem/fail2ban.nix" }
 services.fail2ban.jails.nginx-botsearch-error-log.settings = {
@@ -556,13 +556,6 @@ services.fail2ban.jails.nginx-botsearch.settings = {
 ```
 
 
-## Future improvements
-
-I am fairly certain some of my maps are not quite working. I should also look
-into setting up [Nginx request limits][nginx limit_req]—these can be coupled
-with Fail2Ban for automatic bans.
-
-
 
 [Nginx]: https://nginx.org/
 [Fail2Ban]: https://github.com/fail2ban/fail2ban
@@ -577,8 +570,8 @@ with Fail2Ban for automatic bans.
 [$args]: https://nginx.org/en/docs/http/ngx_http_core_module.html#var_args
 [RDP attack]: https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-2/
 [TLS attack]: https://superuser.com/a/1481142
+[nginx limit_req]: https://nginx.org/en/docs/http/ngx_http_limit_req_module.html
 [Fail2Ban nginx-http-auth filter]: https://github.com/fail2ban/fail2ban/blob/557e7eecf951049135dd52724b7f494096192177/config/filter.d/nginx-http-auth.conf
 [Fail2Ban nginx-forbidden filter]: https://github.com/fail2ban/fail2ban/blob/557e7eecf951049135dd52724b7f494096192177/config/filter.d/nginx-forbidden.conf
 [Fail2Ban nginx-botsearch filter]: https://github.com/fail2ban/fail2ban/blob/557e7eecf951049135dd52724b7f494096192177/config/filter.d/nginx-botsearch.conf
 [Fail2Ban nginx-bad-request filter]: https://github.com/fail2ban/fail2ban/blob/557e7eecf951049135dd52724b7f494096192177/config/filter.d/nginx-bad-request.conf
-[nginx limit_req]: https://nginx.org/en/docs/http/ngx_http_limit_req_module.html
