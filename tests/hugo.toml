@@ -1,0 +1,8 @@
+[module]
+  [[module.mounts]]
+    disableWatch = false
+    source = "{{ getenv `HUGO_TEST_CONTENT` | default `content` }}"
+    target = 'content'
+    files = [
+      '! **/*.excalidraw'
+    ]

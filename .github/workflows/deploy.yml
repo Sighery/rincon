@@ -40,6 +40,9 @@ jobs:
           key: hugo-${{ github.run_id }}
           restore-keys: hugo-
 
+      - name: Run tests
+        run: nix develop .#ci --command ./tests.sh
+
       - name: Build the site
         env:
           TZ: Europe/Vienna
