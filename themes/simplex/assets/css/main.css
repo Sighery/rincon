@@ -319,6 +319,7 @@ blockquote {
 blockquote>p::before,
 blockquote>p::after {
   font-size: 1.2em;
+  line-height: 0;
 }
 
 blockquote>p:first-child:before {
