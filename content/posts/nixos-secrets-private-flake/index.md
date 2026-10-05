@@ -1,7 +1,7 @@
 +++
-date = "2026-10-03T23:33:22+02:00"
-draft = true
-title = "Keeping NixOS secrets in a private flake"
+date = "2026-10-05T00:00:00+00:00"
+draft = false
+title = "Keeping NixOS secrets, secret"
 summary = "The NixOS ecosystem has a few secrets management solutions that allow you to encrypt secrets, and decrypt them at runtime. But what if you don't want to share your encryted secrets publicly?"
 series = ["NixOS", "Secrets management", "Sops"]
 +++
@@ -18,8 +18,8 @@ has been around forever.
 All these tools have one thing in common: they all encrypt secrets, store the
 encrypted values in the repository, and decrypt them at runtime.
 
-This poses somewhat of a risk. The current encryption keys are _currently_
-safe, but are they _post quantum_ safe?
+This poses somewhat of a risk. The encrypted files are _currently_ safe, but
+are they _post quantum_ safe?
 
 
 ## A typical sops-nix configuration
@@ -41,8 +41,8 @@ creation_rules:
 ```
 
 ```yaml { file="my_secret_file.yaml" caption="Encrypted file after running <code>sops my_secret_file.yaml</code>" }
-my_secret_1: ENC[AES256_GCM,data:/Rh0E9b+BQ==,iv:vJL+eYnTP3h6/KLnSXcoTUn+Lj0+/temEVNYVC304LQ=,tag:hM2CWhKpW9/77GaaMFSGAw==,type:str]
-my_secret_2: ENC[AES256_GCM,data:/a10W01J6A==,iv:UzX/Lt2EGJNeePJq3OfpLLyuE29sSnjW0tgemPwDiNU=,tag:P8HNBPMqSHvzGVYGOyGCAA==,type:str]
+acme_api_key: ENC[AES256_GCM,data:/Rh0E9b+BQ==,iv:vJL+eYnTP3h6/KLnSXcoTUn+Lj0+/temEVNYVC304LQ=,tag:hM2CWhKpW9/77GaaMFSGAw==,type:str]
+acme_api_secret: ENC[AES256_GCM,data:/a10W01J6A==,iv:UzX/Lt2EGJNeePJq3OfpLLyuE29sSnjW0tgemPwDiNU=,tag:P8HNBPMqSHvzGVYGOyGCAA==,type:str]
 sops:
   age:
     - enc: |
@@ -69,24 +69,77 @@ sops:
   version: 3.13.3
 ```
 
+This encrypted file contains the API credentials to allow for ACME—automatic
+certificate renewals. The NixOS configuration would then reference the secrets
+like so:
+
+```nix { hl_lines=[4, 8, 18] }
+{ config, ... }:
+
+{
+  # Basic Sops setup
+  sops.defaultSopsFile = ./my_secret_file.yaml;
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+  # Declaring secrets we want to decrypt and their permissions
+  sops.secrets."acme_api_key" = {
+    mode = "0400";
+    owner = "acme";
+  };
+  sops.secrets."acme_api_secret" = {
+    mode = "0400";
+    owner = "acme";
+  };
+
+  # Passing the decrypted files to the ACME service
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "owner@mydomain.com";
+
+    certs."mydomain.com" = {
+      domain = "mydomain.com";
+      dnsProvider = "my_dns_provider";
+      dnsPropagationCheck = true;
+
+      credentialFiles = {
+        "PROVIDER_API_KEY_FILE" = config.sops.secrets."acme_api_key".path;
+        "PROVIDER_API_SECRET_FILE" = config.sops.secrets."acme_api_secret".path;
+      };
+    };
+  };
+}
+```
+
+The decrypted values are never passed directly. Instead, the values are
+written to decrypted files, and their paths are passed to the services that
+need them. This can be a problem for programs that don't support providing
+secrets through file references.
+{ class = "aside" }
+
 This is _currently_ safe, and you will find plenty of people committing these
-files as is into their public repositories. However, depending on the keys you
-used to encrypt, as well as your encryption tool, this might or might not be
+files as is into their public repositories. However, depending on the keys 
+used to encrypt, as well as the encryption tool, this might or might not be
 _post quantum_ safe.
 
 
 ## Not quite secrets: sensitive values
 
-One limitation from `sops-nix`—and `agenix`—is that secrets
+One limitation from `sops-nix`—as well as `agenix`—is that secrets
 [cannot be used at evaluation time][sops-nix evaluation time limitation].
 
 > It is not possible to use secrets at evaluation time of nix code. This is
 > because sops-nix decrypts secrets only in the activation phase of nixos i.e.
 > in `nixos-rebuild switch` on the target machine.
 
-In my configuration I have some values that are not quite secrets, but I want
-to keep private nonetheless. These are values like my work email, home SSIDs,
-some service ports, etc.
+The _evaluation_ phase in NixOS resolves your configuration—that is, all the
+values and dependencies—and builds a giant Bash script to establish the new
+desired system state. The _activation_ phase is where this Bash script gets
+executed.
+{ class = "aside" }
+
+My configuration contains values that are not quite secrets, but that I
+nonetheless want to keep private. These are values like my work email, Wi-Fi
+SSIDs, some service ports, etc.
 
 ```nix
 { ... }:
@@ -120,24 +173,20 @@ information like where you work at, and makes you a target for phishing
 attacks.
 
 So while it is not a problem if they became public, I would rather avoid the
-hassle and keep them private too. Sadly, we cannot just chuck them into the
-secrets and reference them in the NixOS config.
+hassle and keep them private too. Sadly, I cannot just chuck them in with the
+rest of the secrets and reference them in the NixOS config.
 
 
-## A private flake
+## Two birds with one stone: a private flake
 
-Instead of keeping secrets in the same repository as my NixOS configurations,
-which is public, I can keep a private external repository that I import and
-reference as needed. With flakes this becomes quite easy:
+Instead of keeping the encrypted secrets in the same repository as my NixOS
+configurations, which is public, I can fetch them from an external private
+repository. With flakes this is trivial:
 
 ```nix { caption="Abridged example from my own configuration" }
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -145,13 +194,11 @@ reference as needed. With flakes this becomes quite easy:
     secrets.url = "github:Sighery/dotfiles-secrets";
   };
 
-  outputs = { nixpkgs, disko, sops-nix, secrets }: {
+  outputs = { self, nixpkgs, sops-nix, secrets }: {
     nixosConfigurations.panda = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
 
       modules = [
-        disko.nixosModules.disko
-
         {
           system.stateVersion = "26.05";
           networking.hostName = "panda";
@@ -169,7 +216,7 @@ reference as needed. With flakes this becomes quite easy:
 
 This requires authentication. For this, I am using
 [GitHub Personal Access Tokens]. More accurately, I will generate a
-[fine-grained PAT] that only has read-access to this repository:
+[fine-grained PAT] that has read-only access to this repository:
 
 {{< figure
 	src="./new_pat.webp"
@@ -177,21 +224,17 @@ This requires authentication. For this, I am using
 	attrlink="https://github.com/settings/personal-access-tokens/new"
 >}}
 
-The PAT will only be shown once. Once you have it, you can configure Nix to
-[use it][Nix access-tokens]:
+Once you have the PAT, you can configure Nix to [use it][Nix access-tokens]:
 
 ```sh { class="code-wrap" }
 export NIX_CONFIG="access-tokens = github.com=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S"
 ```
 
 After a `nixos-rebuild` it will be cached in the Nix store and the token will
-be unnecessary. Until the next time you change the secrets and update the
-input, that is.
+go unused. You would only need to set it again after you change the secrets
+and update the input, so the new version is fetched and stored.
 
 ### What the private flake looks like
-
-The previous `.sops.yaml` example was based on my setup, only it includes more
-hosts, as well as common secrets that can be decrypted by multiple hosts.
 
 ```sh
 .
@@ -213,8 +256,15 @@ hosts, as well as common secrets that can be decrypted by multiple hosts.
         └── main.yaml
 ```
 
-The `flake.nix` is where I have all the sensitive values that I want to be
-able to reference at evaluation time:
+The previous `.sops.yaml` example was already based on my setup. Mine simply
+includes more hosts, as well as common secrets that can be decrypted by
+multiple hosts.
+
+### Storing sensitive values
+
+Since I am already storing secrets in this external flake, I can also store
+the sensitive values here. Any output of the `flake.nix` can be referenced at
+evaluation time:
 
 ```nix { caption="All the output names are arbitrary, just remember what you named them" }
 {
@@ -237,7 +287,7 @@ able to reference at evaluation time:
 
 We can do attribute lookups with the `private_flake.customAttribute` syntax:
 
-```nix
+```nix { caption="The previous HM configuration, with the sensitive values approach" }
 { secrets, ... }:
 
 {
@@ -264,10 +314,10 @@ We can do attribute lookups with the `private_flake.customAttribute` syntax:
 
 Likewise, secret files can also be referenced and decrypted from the flake
 directly. By coercing the flake into a string—like
-`"${private_flake}/my_file.txt"`—Nix will find the store path of the flake,
-and look for the file in its source tree.
+`"${private_flake}/my_secret_file.yaml"`—Nix will find its store path and look
+for the given file in its source tree:
 
-```nix { caption="Sadly tokens not yet supported. If you are a Nixpkgs committer, <a target='_blank' rel='noopener' href='https://github.com/NixOS/nixpkgs/pull/541149'>look at my PR!</a>" attr="From my NixOS configurations" attrlink="https://github.com/Sighery/dotfiles/blob/d7e42ac18d55262971dceb5b3b130af9b0aff35d/hosts/wilem/syncthing-relay.nix" }
+```nix { caption="Adding token support was <a target='_blank' rel='noopener' href='https://github.com/NixOS/nixpkgs/pull/541149'>my first Nixpkgs contribution!</a>" attr="From my NixOS configurations" attrlink="https://github.com/Sighery/dotfiles/blob/d7e42ac18d55262971dceb5b3b130af9b0aff35d/hosts/wilem/syncthing-relay.nix" }
 { config, secrets, ... }:
 
 {
@@ -285,11 +335,11 @@ and look for the file in its source tree.
 ### Something to keep in mind
 
 One thing to note is that while the sensitive values and encrypted secrets
-will no longer be publicly listed anywhere, they will still be world-readable
-in the Nix store.
+will no longer be publicly listed, they will still be in the world-readable
+Nix store.
 
-However, that is basically unavoidable and would still be the case even if you
-listed the sensitive values publicly, and kept the secrets in the same public
+This is basically unavoidable, and would still be the case even if you listed
+the sensitive values publicly and kept the secrets in the same public
 repository.
 
 
